@@ -1,0 +1,42 @@
+{
+  "Mappings": [
+    {
+      "ChannelId": "IDE04090",
+      "Output": [
+        {
+          "TypeName": "VcdsDataPlotter.Lib.Implementation.DiscreteExhaustTemperatureSensorColumn",
+          "Arguments": [
+            1
+          ]
+        },
+        {
+          "TypeName": "VcdsDataPlotter.Lib.Implementation.DiscreteExhaustTemperatureSensorColumn",
+          "Arguments": [
+            2
+          ]
+        },
+        {
+          "TypeName": "VcdsDataPlotter.Lib.Implementation.DiscreteExhaustTemperatureSensorColumn",
+          "Arguments": [
+            3
+          ]
+        },
+        {
+          "TypeName": "VcdsDataPlotter.Lib.Implementation.DiscreteExhaustTemperatureSensorColumn",
+          "Arguments": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "ChannelId": "*",
+      "Output": [
+        {
+          "TypeName": "VcdsDataPlotter.Lib.Implementation.SimpleDiscreteNumericColumn",
+          "Arguments": []
+        }
+      ]
+    }
+  ]
+}

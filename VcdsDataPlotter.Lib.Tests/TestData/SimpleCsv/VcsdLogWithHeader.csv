@@ -1,0 +1,10 @@
+Monday,04,November,2024,06:00:12:40001-VCID:AA06E9004C766D4AA1F-80FE,VCDS Version: Release 24.7.1 (x64),Data version: 20240919 DS356.3
+05L 906 022 F,ADVMB,R4 2.0l TDI   H30 0987,
+,,G004,F0,G008,F0,G016,F0,G045,F0,G332,F0,G378,F0,G837,F0,G960,F0,G1046,F0,G1057,F0,G1084,F0,G1108,F0,
+
+Marker,TIME,Loc. IDE00021,TIME,Loc. IDE00075,TIME,Loc. IDE00100,TIME,Loc. IDE00371,TIME,Loc. IDE04098,TIME,Loc. IDE05356,TIME,Loc. IDE11219,TIME,Loc. IDE13597,TIME,Loc. IDE16115,TIME,Loc. MAS16542,TIME,Loc. MAS20408,TIME,Loc. ENG247045,
+,STAMP,Engine RPM,STAMP,Vehicle speed,STAMP,Engine torque,STAMP,Fuel consumption,STAMP,NOx-sensor,STAMP,Calculated NOx concentration behind turbocharger,STAMP,Reducing agent inj. quantity: spec. value,STAMP,NOx sensor 3: NOx concentration,STAMP,Consumed reducing agent,STAMP,NOx catalytic converter of Bank 1: NH3 reducing agent fill level,STAMP,NOx catalytic converter 2: NH3 reducing agent loading,STAMP,Engine Exhaust Flow Rate,
+,, /min,, km/h,, Nm,, l/h,, ,, ppm,, mg/s,, ppm,, g,, g/l,, g/l,, kg/h,
+,0.08,0,0.08,0,0.08,-500.0,0.08,0.00,0.08,NOx11:65535 ppm / NOx21:65535 ppm,0.38,0.00,0.38,0.0,0.38,0,0.38,32448.303,0.38,0.2905,0.38,0.1248,0.38,0.0,
+,0.51,0,0.51,0,0.51,-500.0,0.51,0.00,0.51,NOx11:65535 ppm / NOx21:65535 ppm,0.80,0.00,0.80,0.0,0.80,0,0.80,32448.303,0.80,0.2905,0.80,0.1248,0.80,0.0,
+,0.93,0,0.93,0,0.93,-500.0,0.93,0.00,0.93,NOx11:65535 ppm / NOx21:65535 ppm,1.25,0.00,1.25,0.0,1.25,0,1.25,32448.303,1.25,0.2905,1.25,0.1248,1.25,0.0,
