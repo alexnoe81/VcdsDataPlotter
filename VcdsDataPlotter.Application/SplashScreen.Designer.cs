@@ -31,6 +31,7 @@ namespace VcdsDataPlotter.Gui
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashScreen));
             label1 = new Label();
             SuspendLayout();
             // 
@@ -48,9 +49,13 @@ namespace VcdsDataPlotter.Gui
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(297, 80);
-            ControlBox = false;
             Controls.Add(label1);
+            DoubleBuffered = true;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "SplashScreen";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "VCDS Data Plotter";
             TopMost = true;
             Load += SplashScreen_Load;

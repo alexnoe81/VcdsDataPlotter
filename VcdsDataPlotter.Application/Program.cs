@@ -1,18 +1,8 @@
-﻿using Serilog;
-using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-using SWF = System.Windows.Forms;
+﻿using System;
 
 namespace VcdsDataPlotter.Gui;
 
+// <a href="https://www.flaticon.com/free-icons/scatter-plot" title="scatter plot icons">Scatter plot icons created by designhub - Flaticon</a>
 static class Program
 {
     [STAThread]

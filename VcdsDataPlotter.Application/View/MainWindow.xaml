@@ -4,11 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VcdsDataPlotter.Gui.View"
+        xmlns:ViewModel="clr-namespace:VcdsDataPlotter.Gui.ViewModel"
         mc:Ignorable="d"
         Title="VCDS Data Plotter"
+        Icon="{StaticResource keyIconChart}"
         Loaded="Window_Loaded"
+        DataContextChanged="Window_DataContextChanged"
         Height="450" Width="800">
+    <Window.Resources>
+        <ViewModel:MainWindowVM x:Key="keyVM" />
+    </Window.Resources>
+    <Window.Style>
+        <Style TargetType="{x:Type Window}" BasedOn="{StaticResource ResourceKey={x:Type Window}}">
+            <Setter Property="DataContext" Value="{StaticResource keyVM}" />
+        </Style>
+    </Window.Style>
     <Grid>
-
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="Open VCDS CSV file" Command="{Binding CmdOpenVcdsCsvFile}"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

@@ -12,13 +12,27 @@
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <ApplicationIcon>chart-64x64.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Icons\chart-64x64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="chart-64x64.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\chart-64x64.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ScottPlot.WPF" Version="5.0.48" />
     <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VcdsDataPlotter.Lib\VcdsDataPlotter.Lib.csproj" />
   </ItemGroup>
 </Project>

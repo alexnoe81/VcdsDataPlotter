@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VcdsDataPlotter.Lib.PhysicalQuantities
 {
+    /// <summary>
+    /// Not sure if we need that
+    /// </summary>
     public struct MassFlow
     {
         private MassFlow(double kgph) => this.kgph = kgph;

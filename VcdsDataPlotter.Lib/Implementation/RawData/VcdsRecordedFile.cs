@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,10 +31,23 @@ namespace VcdsDataPlotter.Lib.Implementation.RawData;
 */
 public class VcdsRecordedFile
 {
+    private VcdsRecordedFile(IRawTable rawTable)
+    {
+        this.rawTable = rawTable ?? throw new ArgumentNullException(nameof(rawTable));
+        this.rawColumnMap = CreateDefaultMap();
+    }
+
     private VcdsRecordedFile(IRawTable rawTable, RawColumn2ValueColumnMap rawColumnMap)
     {
         this.rawTable = rawTable ?? throw new ArgumentNullException(nameof(rawTable));
         this.rawColumnMap = rawColumnMap ?? throw new ArgumentNullException(nameof(rawColumnMap));
+    }
+
+    public static VcdsRecordedFile Open(IRawTable rawTable)
+    {
+        var result = new VcdsRecordedFile(rawTable);
+        result.Initialize();
+        return result;
     }
 
     public static VcdsRecordedFile Open(IRawTable rawTable, RawColumn2ValueColumnMap rawColumnMap)
@@ -79,6 +93,32 @@ public class VcdsRecordedFile
         // extracting single values from columns that contain multiple columns
         BuildReaders();
 
+        // Extract some meta data from file
+        var dayString = rawTable.GetCellContent(0, 1);
+        var monthString = rawTable.GetCellContent(0, 2);
+        var yearString = rawTable.GetCellContent(0, 3);
+        var timeString = rawTable.GetCellContent(0, 4)?.Substring(0, 8);
+        var hourString = timeString?.Substring(0, 2);
+        var minuteString = timeString?.Substring(3, 2);
+        var secondsString = timeString?.Substring(6, 2);
+        var monthNames = CultureInfo.GetCultureInfo("en-US").DateTimeFormat.MonthNames;
+
+        try
+        {
+            var day = int.Parse(dayString);
+            var month = 1 + Array.FindIndex(monthNames, x => String.Compare(x, monthString, true) == 0);
+            var year = int.Parse(yearString);
+            var hour = int.Parse(hourString);
+            var minute = int.Parse(minuteString);
+            var seconds = int.Parse(secondsString);
+
+            RecordingTimestamp = new DateTime(year, month, day, hour, minute, seconds, DateTimeKind.Unspecified);
+        }
+        catch (Exception ex)
+        {
+            throw new FormatException("Failed to parse recording time.", ex);
+        }
+
         isInitialized = true;
     }
 
@@ -105,6 +145,45 @@ public class VcdsRecordedFile
         if (!isInitialized)
             throw new InvalidOperationException("Object is not initialized.");
     }
+
+    private static RawColumn2ValueColumnMap CreateDefaultMap()
+    {
+        RawColumn2ValueColumnMap map = new();
+        map.Mappings =
+        [
+            new RawColumn2ValueColumnMapItem()
+                {
+                    ChannelId = "IDE04090", Output =
+                    [
+                        new RawColumn2ValueColumnMapItemItem() { TypeName = typeof(DiscreteExhaustTemperatureSensorColumn).FullName, Arguments = [1] },
+                        new RawColumn2ValueColumnMapItemItem() { TypeName = typeof(DiscreteExhaustTemperatureSensorColumn).FullName, Arguments = [2] },
+                        new RawColumn2ValueColumnMapItemItem() { TypeName = typeof(DiscreteExhaustTemperatureSensorColumn).FullName, Arguments = [3] },
+                        new RawColumn2ValueColumnMapItemItem() { TypeName = typeof(DiscreteExhaustTemperatureSensorColumn).FullName, Arguments = [4] },
+                    ]
+                },
+
+                new RawColumn2ValueColumnMapItem()
+                {
+                    ChannelId = "IDE04098", Output =
+                    [
+                        new RawColumn2ValueColumnMapItemItem() { TypeName = typeof(DiscreteNoxSensorsColumn).FullName, Arguments = [1] },
+                        new RawColumn2ValueColumnMapItemItem() { TypeName = typeof(DiscreteNoxSensorsColumn).FullName, Arguments = [2] }
+                    ]
+                },
+
+                new RawColumn2ValueColumnMapItem()
+                {
+                    ChannelId = "*", Output =
+                    [
+                        new RawColumn2ValueColumnMapItemItem() { TypeName = typeof(SimpleDiscreteNumericColumn).FullName, Arguments = new object[0] }
+                    ]
+                }
+        ];
+
+        return map;
+    }
+
+    public DateTime RecordingTimestamp { get; private set; }
 
     public IRawDataColumn[] RawDataColumns => rawDataColumns;
     private VcdsRawDataColumn[] rawDataColumns;

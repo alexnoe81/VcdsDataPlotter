@@ -19,5 +19,7 @@ public sealed class Test_VcdsRecordedFile
         VcdsRecordedFile vcdsRecordedFile = VcdsRecordedFile.Open(table, channelMap);
         Assert.AreEqual(12, vcdsRecordedFile.RawDataColumns.Length);
         Assert.AreEqual(13, vcdsRecordedFile.DiscreteDataColumns.Length);
+
+        Assert.AreEqual(new DateTime(2024, 11, 4, 16, 22, 12), vcdsRecordedFile.RecordingTimestamp);
     } 
 }

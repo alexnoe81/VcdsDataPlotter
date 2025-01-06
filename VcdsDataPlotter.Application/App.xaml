@@ -2,8 +2,29 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:VcdsDataPlotter.Gui"
+             Startup="Application_Startup"
+             Exit="Application_Exit"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        </Style>
+
+        <Style x:Key="styleReadOnlyDataGrid" TargetType="{x:Type DataGrid}">
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="CanUserReorderColumns" Value="False" />
+            <Setter Property="CanUserResizeColumns" Value="False" />
+            <Setter Property="CanUserResizeRows" Value="False" />
+            <Setter Property="CanUserSortColumns" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+        </Style>
+
+        <Style TargetType="{x:Type DataGridRowHeader}">
+            <Setter Property="Width" Value="0" />
+        </Style>
+
+        <BitmapImage x:Key="keyIconChart" UriSource="pack://application:,,,/icons/chart-64x64.png" />
     </Application.Resources>
 </Application>
