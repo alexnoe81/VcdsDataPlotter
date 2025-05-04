@@ -1,15 +1,14 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using VcdsDataPlotter.Lib.Implementation;
+using VcdsDataPlotter.Lib.RawTable.Columnizer;
 
 namespace VcdsDataPlotter.Lib.JsonHelpers
 {
-    public class JsonHelper
+   /* public class JsonHelper
     {
         public static RawColumn2ValueColumnMap LoadMap(string filePath)
         {
@@ -25,6 +24,8 @@ namespace VcdsDataPlotter.Lib.JsonHelpers
 
         public static JsonSerializer CreateMappingSerializer()
         {
+            JsonSerializerOptions options = new JsonSerializerOptions();
+
             JsonSerializer result = new JsonSerializer();
             result.DateFormatHandling = DateFormatHandling.IsoDateFormat;
             result.SerializationBinder = new InternalChannelMapSerializationBinder();
@@ -71,5 +72,5 @@ namespace VcdsDataPlotter.Lib.JsonHelpers
 
         private const string ChannelDescriptionName = "ChannelDescription";
         private const string OutputChannelName = "OutputChannel";
-    }
+    }*/
 }

@@ -7,7 +7,8 @@
         xmlns:converters="clr-namespace:VcdsDataPlotter.Gui.Converter"
         xmlns:ScottPlot.WPF="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        DataContextChanged="Window_DataContextChanged"
+        Height="750" Width="1024">
     <Window.Resources>
         <converters:FilePathConverter x:Key="keyFilePathConverter" />
     </Window.Resources>
@@ -36,6 +37,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             
             <TextBlock
@@ -48,13 +51,14 @@
             <TextBlock
                 Grid.Row="1" Grid.Column="1" Text="{Binding RecordingTimestamp, StringFormat='yyyy-MM-dd HH\\:mm\\:ss'}" />
 
+            <!-- These are columns that directly exist in the source file, or which are decompositions of columns with
+                 multiple values, like 4 temperature columns in one measurement channel -->
             <TextBlock
                 Grid.Row="2" Grid.Column="0" Text="Source columns: " Margin="0,4,8,2" VerticalAlignment="Top" />
             <DataGrid
-                Grid.Row="2" Grid.Column="1" ItemsSource="{Binding DataColumns}" x:Name="availableSourceColumns"
+                Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SourceColumns}" x:Name="availableSourceColumns"
                 Style="{StaticResource styleReadOnlyDataGrid}" SelectionMode="Extended" SelectionUnit="FullRow"
-                SelectionChanged="availableSourceColumns_SelectionChanged"
-                >
+                SelectionChanged="availableSourceColumns_SelectionChanged" Height="200">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Channel Id" Width="100" >
                         <DataGridTemplateColumn.CellTemplate>
@@ -80,6 +84,19 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <Button
+                Grid.Row="3" Content="Add" MinHeight="40" Margin="8" Command="{Binding CmdAddColumn}" />
+            
+            <!-- These will probably need to be a tree because a data grid can't really hold input column(s), calculations and arguments -->
+            <TextBlock
+                Grid.Row="4" Grid.Column="0" Text="Calculated columns: " Margin="0,4,8,2" VerticalAlignment="Stretch" />
+            
+            
+            <TreeView  Grid.Row="4" Grid.Column="1">
+                
+            </TreeView>
+            
         </Grid>
 
         <ScottPlot.WPF:WpfPlotGL Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" x:Name="plotControl" />

@@ -1,5 +1,6 @@
 ﻿using VcdsDataPlotter.Lib.Implementation;
-using VcdsDataPlotter.Lib.Implementation.RawData;
+using VcdsDataPlotter.Lib.RawTable.Columnizer;
+using VcdsDataPlotter.Lib.RawTableReader;
 
 namespace VcdsDataPlotter.Lib.Tests;
 

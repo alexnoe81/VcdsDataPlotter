@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VcdsDataPlotter.Gui.ViewModel;
+using VcdsDataPlotter.Lib.Implementation.CalculatedColumns.Templates;
 
 namespace VcdsDataPlotter.Gui.View
 {
@@ -30,7 +31,7 @@ namespace VcdsDataPlotter.Gui.View
             var currentSelection = availableSourceColumns.SelectedItems;
             plotControl.Plot.Clear();
 
-            foreach (var item in currentSelection.OfType<DataColumnVM>())
+            foreach (var item in currentSelection.OfType<SourceColumnVM>())
             {
                 var xs = item.EnumeratePoints().Select(x => x.TimeStamp.TotalSeconds).ToArray();
                 var ys = item.EnumeratePoints().Select(x => x.RawData).ToArray();
@@ -46,5 +47,40 @@ namespace VcdsDataPlotter.Gui.View
             plotControl.Plot.Axes.AutoScale();
             plotControl.Refresh();
         }
+
+        private void Window_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is DocumentVM old)
+            {
+                old.OnCmdAddColumn -= HandleCmdAddColumn;
+            }
+
+            if (e.NewValue is DocumentVM @new)
+            {
+                @new.OnCmdAddColumn += HandleCmdAddColumn;
+            }
+        }
+
+        private void HandleCmdAddColumn(object? sender, EventArgs e)
+        {
+            var vm = this.DataContext as DocumentVM;
+
+            var createColumnVm = new CreateVirtualColumnWindowVM();
+
+            List<IColumnTemplate> templates = [.. templateFactory.GetTemplates()];
+            foreach (var item in templates)
+                createColumnVm.Templates.Add(new(item));
+
+            foreach (var item in vm.SourceColumns)
+                createColumnVm.AllAvailableColumns.Add(item);
+            foreach (var item in vm.CalculatedColumns)
+                createColumnVm.AllAvailableColumns.Add(item);
+
+            CreateVirtualColumnWindow window = new CreateVirtualColumnWindow();
+            window.DataContext = createColumnVm;
+            window.Show();
+        }
+
+        private TemplateFactory templateFactory = new TemplateFactory();
     }
 }

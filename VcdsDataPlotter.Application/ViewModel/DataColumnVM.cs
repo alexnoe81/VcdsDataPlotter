@@ -5,48 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using VcdsDataPlotter.Gui.ViewModel.Base;
 using VcdsDataPlotter.Lib.Interface;
+using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
 namespace VcdsDataPlotter.Gui.ViewModel
 {
-    public class DataColumnVM : ViewModelBase
+    /// <summary>
+    /// This represents a column that can provide data points. 
+    /// </summary>
+    public abstract class DataColumnVM : ViewModelBase
     {
-        public DataColumnVM(IDiscreteDataColumn source)
+        protected DataColumnVM(IDiscreteDataColumn model)
         {
-            this.source = source ?? throw new ArgumentNullException(nameof(source));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
         }
+
 
         /// <summary>
-        /// Returns the ID of the source column. This may be null for virtual columns
+        /// Allows accessing the model for this column
         /// </summary>
-        public string? SourceColumnId
-        {
-            get => this.sourceColumnId;
-            set => SetProperty(ref this.sourceColumnId, value);
-        }
-
-        public string? SourceColumnTitle
-        {
-            get => this.sourceColumnTitle;
-            set => SetProperty(ref this.sourceColumnTitle, value);
-        }
-
-        public string? SourceColumnUnit
-        {
-            get => this.sourceColumnUnit;
-            set => SetProperty(ref this.sourceColumnUnit, value);
-        }
-
-        public IEnumerable<SingleDataItem> EnumeratePoints()
-        {
-            foreach (var item in source.EnumerateDataItems())
-                yield return item;
-        }
+        public IDiscreteDataColumn Model { get; protected set; }
 
 
-
-        private string? sourceColumnId;
-        private string? sourceColumnTitle;
-        private string? sourceColumnUnit;
-        private IDiscreteDataColumn source;
+        public abstract IEnumerable<SingleDataItem> EnumeratePoints();
     }
 }

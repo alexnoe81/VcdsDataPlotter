@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.CalculatedColumns\VcdsDataPlotter.Lib.CalculatedColumns.csproj" />
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.Physics\VcdsDataPlotter.Lib.Physics.csproj" />
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Columnizer\VcdsDataPlotter.Lib.RawTable.Columnizer.csproj" />
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Reader\VcdsDataPlotter.Lib.RawTable.Reader.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib\VcdsDataPlotter.Lib.csproj" />
   </ItemGroup>
 
@@ -22,9 +26,31 @@
     <None Update="TestData\SimpleCsv\Sample_1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\SimpleCsv\VcsdLogWithFuelData.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\SimpleCsv\VcsdLogWithHeader.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MSTest.Analyzers" Version="3.8.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MSTest.TestAdapter" Version="3.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MSTest.TestFramework" Version="3.8.3" />
   </ItemGroup>
 
 </Project>

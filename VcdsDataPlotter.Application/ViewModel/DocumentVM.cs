@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using VcdsDataPlotter.Gui.Model;
 using VcdsDataPlotter.Gui.ViewModel.Base;
 
@@ -16,7 +17,16 @@ namespace VcdsDataPlotter.Gui.ViewModel
         {
             this.filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
             objectLogger = ClassLogger.ForContext(nameof(filePath), filePath);
+
+            CmdAddColumn = new SimpleCommand(DoCmdAddColumn);
+
         }
+
+        public ICommand CmdAddColumn { get; private set; }
+
+        public event EventHandler<EventArgs>? OnCmdAddColumn;
+
+        private void DoCmdAddColumn() => OnCmdAddColumn?.Invoke(this, EventArgs.Empty);
 
         public void Initialize()
         {
@@ -25,14 +35,14 @@ namespace VcdsDataPlotter.Gui.ViewModel
 
             foreach (var column in document.DiscreteColumns)
             {
-                DataColumnVM newColumn = new DataColumnVM(column)
+                SourceColumnVM newColumn = new SourceColumnVM(column)
                 {
                     SourceColumnId = column.ChannelId,
                     SourceColumnTitle = column.Title,
                     SourceColumnUnit = column.Unit
                 };
 
-                dataColumns.Add(newColumn);
+                sourceColumns.Add(newColumn);
             }
         }
 
@@ -52,14 +62,16 @@ namespace VcdsDataPlotter.Gui.ViewModel
         public DateTime RecordingTimestamp => this.document.RecordingTimestamp;
         
 
-        public ObservableCollection<DataColumnVM> DataColumns { get => dataColumns; }
+        public ObservableCollection<SourceColumnVM> SourceColumns { get => sourceColumns; }
+        public ObservableCollection<DataColumnVM> CalculatedColumns { get => calculatedColumns; }
 
 
         private static ILogger ClassLogger = Serilog.Log.Logger.ForClass(typeof(DocumentVM));
         private ILogger? objectLogger;
         private Document? document;
 
-        private ObservableCollection<DataColumnVM> dataColumns = new ();
+        private ObservableCollection<SourceColumnVM> sourceColumns = new ();
+        private ObservableCollection<DataColumnVM> calculatedColumns = new ();
         private string filePath;
     }
 }

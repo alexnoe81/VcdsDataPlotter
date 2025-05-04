@@ -6,9 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VcdsDataPlotter.Gui.ViewModel;
-using VcdsDataPlotter.Lib.Implementation;
-using VcdsDataPlotter.Lib.Implementation.RawData;
-using VcdsDataPlotter.Lib.Interface;
+using VcdsDataPlotter.Lib.RawTable.Columnizer;
+using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
+using VcdsDataPlotter.Lib.RawTableReader;
+using VcdsDataPlotter.Lib.RawTableReader.Interface;
 
 namespace VcdsDataPlotter.Gui.Model
 {
@@ -25,12 +26,13 @@ namespace VcdsDataPlotter.Gui.Model
             using var fileStream = File.OpenRead(filePath);
             using var fileReader = new StreamReader(fileStream, Encoding.Latin1, true);
             IRawTable table = CsvTable.Open(fileReader, ",");
-            VcdsRecordedFile vcdsFile = VcdsRecordedFile.Open(table);
+            VcdsTableColumnizer vcdsFile = VcdsTableColumnizer.Open(table);
             result.source = vcdsFile;
 
             FileInfo fi = new FileInfo(filePath);
-            result.DiscreteColumns = (IDiscreteDataColumn[])vcdsFile.DiscreteDataColumns.Clone();
             result.RawColumns = (IRawDataColumn[])vcdsFile.RawDataColumns.Clone();
+            result.DiscreteColumns = (IDiscreteDataColumn[])vcdsFile.DiscreteDataColumns.Clone();
+
             result.FileTime = fi.LastWriteTime;
             result.RecordingTimestamp = vcdsFile.RecordingTimestamp;
 
@@ -46,6 +48,6 @@ namespace VcdsDataPlotter.Gui.Model
 
         private static ILogger ClassLogger = Serilog.Log.Logger.ForClass(typeof(Document));
         private ILogger? objectLogger;
-        private VcdsRecordedFile? source;
+        private VcdsTableColumnizer? source;
     }
 }

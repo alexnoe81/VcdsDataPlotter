@@ -1,0 +1,30 @@
+﻿------------------------------------------
+
+An IColumnTemplate is something that can be selected
+
+IColumnTemplate :
+  string Name;
+  string Explanation;
+  IColumnTemplateInputColumnSpecification[] InputColumns
+  
+  
+------------------------------------------
+
+IColumnTemplateInputColumnSpecification
+  string Explanation
+  IsCompatibleWith(IDiscreteDataColumn)
+
+An IColumnTemplateInputColumnSpecification defines which kind of input column is needed. This
+will not be just a description, but a method IsCompatibleWith can test if an existing input
+column actually meeds a specification.
+
+Examples:
+  - must be "by time" value, so that it can be integrated by time
+
+
+
+-------------------------------------------
+
+An IDiscreteDataColumn is a data column returning discrete values. This can be directly based
+on input data, but can also be a calculated column.
+

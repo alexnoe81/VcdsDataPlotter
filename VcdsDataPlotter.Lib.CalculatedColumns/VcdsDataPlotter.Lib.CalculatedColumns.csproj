@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.CalculatedColumns.Interface\VcdsDataPlotter.Lib.CalculatedColumns.Interface.csproj" />
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.Physics\VcdsDataPlotter.Lib.Physics.csproj" />
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Columnizer.Interface\VcdsDataPlotter.Lib.RawTable.Columnizer.Interface.csproj" />
+  </ItemGroup>
+
+</Project>

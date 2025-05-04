@@ -1,7 +1,11 @@
 ﻿using VcdsDataPlotter.Lib.Implementation;
+using VcdsDataPlotter.Lib.RawTableReader;
 
 namespace VcdsDataPlotter.Lib.Tests;
 
+/// <summary>
+/// TODO: Add test cases that do not only count columns and rows, but that test that the content is read correctly
+/// </summary>
 [TestClass]
 public sealed class Test_CsvTable
 {

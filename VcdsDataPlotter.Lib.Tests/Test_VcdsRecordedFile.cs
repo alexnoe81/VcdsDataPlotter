@@ -1,5 +1,5 @@
-﻿using VcdsDataPlotter.Lib.Implementation;
-using VcdsDataPlotter.Lib.Implementation.RawData;
+﻿using VcdsDataPlotter.Lib.RawTable.Columnizer;
+using VcdsDataPlotter.Lib.RawTableReader;
 
 namespace VcdsDataPlotter.Lib.Tests;
 
@@ -16,7 +16,7 @@ public sealed class Test_VcdsRecordedFile
         CsvTable table = CsvTable.Open(reader, ",");
 
         var channelMap = ChannelMaps.CreateDefaultMap();
-        VcdsRecordedFile vcdsRecordedFile = VcdsRecordedFile.Open(table, channelMap);
+        VcdsTableColumnizer vcdsRecordedFile = VcdsTableColumnizer.Open(table, channelMap);
         Assert.AreEqual(12, vcdsRecordedFile.RawDataColumns.Length);
         Assert.AreEqual(13, vcdsRecordedFile.DiscreteDataColumns.Length);
 
