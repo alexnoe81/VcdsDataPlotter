@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns
+namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
 {
     /// <summary>
     /// This column calculates the difference between any row and the first row.
@@ -18,7 +18,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
         private DifferenceToFirstLineColumn(IDiscreteDataColumn sourceColumn, string title)
         {
             this.sourceColumn = sourceColumn ?? throw new ArgumentNullException(nameof(sourceColumn));
-            this.Title = title;
+            Title = title;
         }
 
         public static DifferenceToFirstLineColumn Create(IDiscreteDataColumn sourceColumn, string title)
@@ -28,7 +28,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
             return result;
         }
 
-        public string? ChannelId => sourceColumn.ChannelId + "DELTA";
+        public string? ChannelId => sourceColumn.ChannelId + "_DELTA";
 
         public string? Title { get; private set; }
 

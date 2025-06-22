@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VcdsDataPlotter.Lib.CalculatedColumns;
+using VcdsDataPlotter.Lib.CalculatedColumns.Math;
 using VcdsDataPlotter.Lib.RawTable.Columnizer;
 using VcdsDataPlotter.Lib.RawTableReader;
 
@@ -23,7 +23,12 @@ namespace VcdsDataPlotter.Lib.Tests.TestCalculatedColumns
             var vcdsFile = VcdsTableColumnizer.Open(reader);
             var fuelColumn = vcdsFile.DiscreteDataColumns.Where(x => x.Title.Contains("Fuel")).First();
 
-            IntegralByTimeColumn testee = IntegralByTimeColumn.Create(fuelColumn);
+            IntegralByTimeColumn testee = IntegralByTimeColumn.Create("Total fuel", "VIRT_FUEL", fuelColumn);
+            
+            foreach (var item in testee.EnumerateDataItems())
+            {
+
+            }
         }
 
     }

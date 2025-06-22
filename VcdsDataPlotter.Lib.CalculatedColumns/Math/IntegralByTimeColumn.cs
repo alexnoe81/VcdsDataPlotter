@@ -2,7 +2,7 @@
 using VcdsDataPlotter.Lib.Physics;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns
+namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
 {
     /// <summary>
     /// Represents a calculated column containing ∫ sourceColumn(t) dt
@@ -10,12 +10,13 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
     /// TODO: We might need to lift the restriction about only integrating stuff over time if stuff is by time,
     /// because if we want to average a temperature over a few seconds, it still makes sense to calculate the
     /// integral over the temperature by time.
-    public class IntegralByTimeColumn : CalculatedColumnBase, IDiscreteDataColumn
+    public class IntegralByTimeColumn : InitializableCalculatedColumnBase, IDiscreteDataColumn
     {
-        private IntegralByTimeColumn(IDiscreteDataColumn sourceColumn, string title, string channelId)
+        private IntegralByTimeColumn(string title, string channelId, IDiscreteDataColumn sourceColumn)
         {
             this.sourceColumn = sourceColumn ?? throw new ArgumentNullException(nameof(sourceColumn));
-            this.Title = title;
+            Title = title;
+            ChannelId = channelId;
         }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public static IntegralByTimeColumn Create(IDiscreteDataColumn sourceColumn, string title, string channelId)
+        public static IntegralByTimeColumn Create(string title, string channelId, IDiscreteDataColumn sourceColumn)
         {
             _ = sourceColumn ?? throw new ArgumentNullException(nameof(sourceColumn));
 
@@ -47,7 +48,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
             return result;
         }
 
-        private void Initialize()
+        protected override void InternalInitialize()
         {
             List<SingleDataItem> temp = new();
             SingleDataItem? preceding = null;
@@ -84,7 +85,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
             dataItems = temp.ToArray();
         }
 
-        public string? ChannelId => throw new NotImplementedException();
+        public string? ChannelId { get; private set; }
 
         public string? Title { get; private set; }
 
@@ -92,11 +93,13 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
 
         public IEnumerable<SingleDataItem> EnumerateDataItems()
         {
-            foreach (var item in dataItems)
+            CheckInitialized();
+
+            foreach (var item in dataItems!)
                 yield return item;
         }
 
         private IDiscreteDataColumn sourceColumn;
-        private SingleDataItem[] dataItems;
+        private SingleDataItem[]? dataItems;
     }
 }

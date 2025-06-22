@@ -55,7 +55,7 @@ public class UnitHelpers
             // Handle very simple cases
             if (unitTo == unitFrom) return 1.0;
 
-            if (unitTo == "g" || unitTo == "l")
+            if (unitTo == "g" || unitTo == "l" || unitTo == "m")
             {
                 if (unitFrom.StartsWith("k"))
                     return 1_000;
@@ -73,7 +73,7 @@ public class UnitHelpers
                     return 3600;
             }
 
-            if (unitFrom == "g" || unitFrom == "l" || unitFrom == "s")
+            if (unitFrom == "g" || unitFrom == "l" || unitFrom == "s" || unitFrom == "h")
             {
                 return 1.0 / GetConversionFactor(unitTo, unitFrom, stack);
             }
@@ -126,6 +126,8 @@ public class UnitHelpers
             "s" => "s",
             "l" => "l",
             "ml" => "l",
+            "km" => "m",
+            "m" => "m",
             _ => throw new ArgumentException($"Unit '{unit}' is not supported.", nameof(unit))
         };
     }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using VcdsDataPlotter.Lib.CalculatedColumns.Interface;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns
+namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
 {
-    public class InterpolatingColumn : CalculatedColumnBase, IInterpolatingColumn
+    public class InterpolatingColumn : InitializableCalculatedColumnBase, IInterpolatingColumn
     {
         private InterpolatingColumn(IDiscreteDataColumn discreteColumn)
         {
@@ -22,7 +22,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
             return result;
         }
 
-        public void Initialize()
+        protected override void InternalInitialize()
         {
             sourceItems = [.. discreteColumn.EnumerateDataItems()];
             sourceItemsTimeStamps = new TimeSpan[sourceItems.Length];
@@ -30,7 +30,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
                 sourceItemsTimeStamps[j] = sourceItems[j].TimeStamp;
         }
 
-        public override string? ToString() => this.discreteColumn.ToString();
+        public override string? ToString() => discreteColumn.ToString();
 
         public IEnumerable<SingleDataItem> EnumerateDataItems()
         {
@@ -40,8 +40,12 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
 
         public object GetValue(TimeSpan timestamp)
         {
-            if (sourceItems.Length == 0)
-                throw new InvalidOperationException("???");
+            CheckInitialized();
+            if (sourceItems is not { Length: > 0 })
+                throw new InvalidOperationException("No data available.");
+            if (sourceItemsTimeStamps is not { Length: > 0 })
+                throw new InvalidOperationException("No data available.");
+
             if (sourceItems.Length == 1)
                 return sourceItems[0].RawData;
 
@@ -76,8 +80,8 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns
         }
 
         private IDiscreteDataColumn discreteColumn;
-        private SingleDataItem[] sourceItems;
-        private TimeSpan[] sourceItemsTimeStamps;
+        private SingleDataItem[]? sourceItems;
+        private TimeSpan[]? sourceItemsTimeStamps;
 
         public string? ChannelId => discreteColumn.ChannelId;
 

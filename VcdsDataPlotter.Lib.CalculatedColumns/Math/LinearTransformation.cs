@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns
+namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
 {
     public class LinearTransformation : CalculatedColumnBase, IDiscreteDataColumn
     {
         public LinearTransformation(IDiscreteDataColumn sourceColumn) 
         {
-            this.SourceColumn = sourceColumn ?? throw new ArgumentNullException(nameof(sourceColumn));
+            SourceColumn = sourceColumn ?? throw new ArgumentNullException(nameof(sourceColumn));
         }
 
         public override string ToString()

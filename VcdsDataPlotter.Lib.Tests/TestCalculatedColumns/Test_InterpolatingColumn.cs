@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VcdsDataPlotter.Lib.CalculatedColumns;
 using VcdsDataPlotter.Lib.CalculatedColumns.Interface;
+using VcdsDataPlotter.Lib.CalculatedColumns.Math;
 using VcdsDataPlotter.Lib.RawTable.Columnizer;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 

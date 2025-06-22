@@ -10,6 +10,7 @@ using VcdsDataPlotter.Lib.RawTable.Columnizer;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 using VcdsDataPlotter.Lib.RawTableReader;
 using VcdsDataPlotter.Lib.RawTableReader.Interface;
+using VcdsDataPlotter.Lib.CalculatedColumns;
 
 namespace VcdsDataPlotter.Gui.Model
 {
@@ -36,11 +37,18 @@ namespace VcdsDataPlotter.Gui.Model
             result.FileTime = fi.LastWriteTime;
             result.RecordingTimestamp = vcdsFile.RecordingTimestamp;
 
+            if (KnownCalculatedColumnsFactory.TryCreateTraveledDistanceColumn(result.DiscreteColumns, out var distanceColumn))
+            {
+                result.CalculatedColumns = new IDiscreteDataColumn[] { distanceColumn };
+            }
+
             return result;
         }
 
         public IDiscreteDataColumn[] DiscreteColumns { get; set; }
         public IRawDataColumn[] RawColumns { get; set; }
+
+        public IDiscreteDataColumn[] CalculatedColumns { get; set; }
 
         public DateTime FileTime { get; private set; }
         public DateTime RecordingTimestamp { get; private set; }

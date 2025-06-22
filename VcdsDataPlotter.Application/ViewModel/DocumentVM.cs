@@ -33,7 +33,7 @@ namespace VcdsDataPlotter.Gui.ViewModel
             Document document = Document.LoadFile(filePath);
             this.document = document;
 
-            foreach (var column in document.DiscreteColumns)
+            foreach (var column in document.DiscreteColumns.Concat(document.CalculatedColumns))
             {
                 SourceColumnVM newColumn = new SourceColumnVM(column)
                 {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VcdsDataPlotter.Gui.ViewModel.Base;
-using VcdsDataPlotter.Lib.Interface;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
 namespace VcdsDataPlotter.Gui.ViewModel

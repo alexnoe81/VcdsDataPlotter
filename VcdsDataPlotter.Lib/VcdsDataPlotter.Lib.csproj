@@ -16,4 +16,8 @@
     <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Columnizer\VcdsDataPlotter.Lib.RawTable.Columnizer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementation\DiscreteColumns\" />
+  </ItemGroup>
+
 </Project>

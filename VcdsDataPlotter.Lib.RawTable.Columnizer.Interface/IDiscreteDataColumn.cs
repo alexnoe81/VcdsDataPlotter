@@ -30,6 +30,8 @@ namespace VcdsDataPlotter.Lib.RawTable.Columnizer.Interface
     {
         string? ChannelId { get; }
         string? Title { get; }
+
+        // TODO: Think about how to handle simple scalings, like ppm
         string? Unit { get; }
 
         IEnumerable<SingleDataItem> EnumerateDataItems();

@@ -2,14 +2,14 @@
 using VcdsDataPlotter.Lib.Physics;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns
+namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
 {
     public class UnitTransformation : LinearTransformation
     {
         private UnitTransformation(IDiscreteDataColumn sourceColumn, string targetUnit) 
             :base(sourceColumn) 
         {
-            Factor = Physics.UnitHelpers.GetConversionFactor(sourceColumn.Unit, targetUnit);
+            Factor = UnitHelpers.GetConversionFactor(sourceColumn.Unit, targetUnit);
             this.targetUnit = targetUnit;
         }
 

@@ -7,8 +7,17 @@ using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
 namespace VcdsDataPlotter.Lib.Implementation.DiscreteColumns
 {
-    public class SimpleChoiceColumn : IDiscreteDataColumn
+#if FALSE
+    /// <summary>
+    /// A SelectorColumn is a column that selects its input from several possible source columns
+    /// where only one needs to be present. For example, NOx sensor readings might be selected from
+    /// a column containing combined NOx1/2 readings, or from columns with single readings
+    /// </summary>
+    internal class SelectorColumn : IDiscreteDataColumn
     {
+        public SelectorColumn() { }
+
+
         public string? ChannelId => throw new NotImplementedException();
 
         public string? Title => throw new NotImplementedException();
@@ -20,4 +29,5 @@ namespace VcdsDataPlotter.Lib.Implementation.DiscreteColumns
             throw new NotImplementedException();
         }
     }
+#endif
 }
