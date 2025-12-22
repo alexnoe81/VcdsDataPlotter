@@ -6,11 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VcdsDataPlotter.Gui.ViewModel;
+using VcdsDataPlotter.Lib.CalculatedColumns;
+using VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders;
+using VcdsDataPlotter.Lib.CalculatedColumns.ColumnSpecs;
+using VcdsDataPlotter.Lib.CalculatedColumns.Math;
 using VcdsDataPlotter.Lib.RawTable.Columnizer;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 using VcdsDataPlotter.Lib.RawTableReader;
 using VcdsDataPlotter.Lib.RawTableReader.Interface;
-using VcdsDataPlotter.Lib.CalculatedColumns;
 
 namespace VcdsDataPlotter.Gui.Model
 {
@@ -37,10 +40,20 @@ namespace VcdsDataPlotter.Gui.Model
             result.FileTime = fi.LastWriteTime;
             result.RecordingTimestamp = vcdsFile.RecordingTimestamp;
 
-            if (KnownCalculatedColumnsFactory.TryCreateTraveledDistanceColumn(result.DiscreteColumns, out var distanceColumn))
+            var vehicleSpeedColumnBuilder = new ColumnBuilderConfiguration().SelectFirst(
+                ColumnSpec.ChannelIdIs("IDE00075"),
+                ColumnSpec.TitleContains("Vehicle speed"));
+
+            var traveledDistanceColumnBuilder = ColumnBuilderConfiguration
+                .Create("Traveled distance", "VIRT_DISTANCE")
+                .Calculate.IntegralByTime.Over(vehicleSpeedColumnBuilder)
+                .ConvertUnit("m");
+            
+            if (traveledDistanceColumnBuilder.TryBuild(result.DiscreteColumns, out var traveledDistanceColumn))
             {
-                result.CalculatedColumns = new IDiscreteDataColumn[] { distanceColumn };
+                result.CalculatedColumns = [traveledDistanceColumn];
             }
+
 
             return result;
         }

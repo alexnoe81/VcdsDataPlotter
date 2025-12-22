@@ -12,7 +12,8 @@ public class DiscreteExhaustTemperatureSensorColumn : SingleValueColumnBase
 {
     public DiscreteExhaustTemperatureSensorColumn(IRawDataColumn rawData, int sensorIndex) : base(rawData)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(sensorIndex);
+        if (sensorIndex < 0)
+            throw new ArgumentOutOfRangeException("Sensor index must not be negative.", nameof(sensorIndex));
         this.sensorIndex = sensorIndex;
     }
 

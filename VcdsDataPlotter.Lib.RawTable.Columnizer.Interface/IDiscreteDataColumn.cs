@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace VcdsDataPlotter.Lib.RawTable.Columnizer.Interface
 {
-    public record class SingleDataItem(TimeSpan TimeStamp, double RawData);
+    public record class SingleDataItem(TimeSpan TimeStamp, double RawData)
+    {
+        public override string ToString() => ToString(CultureInfo.CurrentCulture);
+        public string ToString(CultureInfo cultureInfo) => string.Format(cultureInfo, "[{0:hh\\:mm\\:ss\\.fff}]: {1}", TimeStamp, RawData);
+    }
 
     public class SingleDataItemComparerByTimestamp : IComparer<SingleDataItem>
     {

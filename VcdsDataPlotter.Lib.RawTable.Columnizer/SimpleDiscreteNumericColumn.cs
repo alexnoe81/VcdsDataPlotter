@@ -23,7 +23,7 @@ public class SimpleDiscreteNumericColumn : SingleValueColumnBase
     {
         foreach (var item in RawData.EnumerateDataItems())
         {
-            if (double.TryParse(item.RawData, DefaultCulture, out var value))
+            if (double.TryParse(item.RawData, System.Globalization.NumberStyles.Number, DefaultCulture, out var value))
             {
                 yield return new SingleDataItem(item.TimeStamp, value);
             }

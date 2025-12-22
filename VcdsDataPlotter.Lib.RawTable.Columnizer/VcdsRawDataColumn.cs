@@ -42,7 +42,7 @@ public class VcdsRawDataColumn : IRawDataColumn
             if (rawTimestamp is null && j >= 10)
                 break;
 
-            if (double.TryParse(rawTimestamp, DefaultCulture, out var timeStamp))
+            if (double.TryParse(rawTimestamp, NumberStyles.Number, DefaultCulture, out var timeStamp))
             {
                 firstDataRow = j;
                 break;
@@ -82,7 +82,7 @@ public class VcdsRawDataColumn : IRawDataColumn
                     continue;
 
                 // There may be "N/A" items
-                if (!double.TryParse(rawTimestamp, DefaultCulture, out var timeStamp))
+                if (!double.TryParse(rawTimestamp, NumberStyles.Number, DefaultCulture, out var timeStamp))
                     continue;
 
                 yield return new RawDataItem(TimeSpan.FromSeconds(timeStamp), rawData);

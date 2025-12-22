@@ -27,6 +27,7 @@ namespace VcdsDataPlotter.Lib.Tests
 
             Assert.IsTrue(UnitHelpers.IsConvertible("km/h", "m/s"));
 
+            Assert.IsTrue(UnitHelpers.IsConvertible("mg/s", "mg/s"));
             Assert.IsTrue(UnitHelpers.IsConvertible("mg/s", "kg/h"));
             Assert.IsTrue(UnitHelpers.IsConvertible("kg/h", "mg/s"));
 
@@ -48,6 +49,7 @@ namespace VcdsDataPlotter.Lib.Tests
 
             Assert.AreEqual(3_600.0 / 1_000_000.0, UnitHelpers.GetConversionFactor("mg/s", "kg/h"));
             Assert.AreEqual(1_000_000.0 / 3_600.0, UnitHelpers.GetConversionFactor("kg/h", "mg/s"));
+            Assert.AreEqual(1, UnitHelpers.GetConversionFactor("mg/s", "mg/s"));
 
             Assert.AreEqual(1 / 3.6, UnitHelpers.GetConversionFactor("km/h", "m/s"));
         }

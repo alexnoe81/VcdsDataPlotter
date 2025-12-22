@@ -54,7 +54,9 @@ public partial class MainWindow : Window
 
         OpenFileDialog openFileDialog = new()
         {
+#if NET8_0_OR_GREATER
             ClientGuid = OpenVcdsFileDialogGuid,
+#endif
             Filter = "CSV files|*.csv",
             Multiselect = false,
             AddExtension = true,

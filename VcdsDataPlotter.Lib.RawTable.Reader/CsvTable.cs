@@ -48,9 +48,8 @@ public class CsvTable : IRawTable
     public string? GetCellContent(int row, int column)
     {
         CheckInitialized();
-
-        ArgumentOutOfRangeException.ThrowIfNegative(row);
-        ArgumentOutOfRangeException.ThrowIfNegative(column);
+        if (row < 0) throw new ArgumentOutOfRangeException("Row must not be negative.", nameof(row));
+        if (column < 0) throw new ArgumentOutOfRangeException("Row must not be negative.", nameof(column));
 
         if (row >= NumberOfRows)
             return null;

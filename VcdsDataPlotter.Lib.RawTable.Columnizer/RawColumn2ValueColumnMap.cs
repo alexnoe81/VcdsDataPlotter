@@ -21,7 +21,9 @@ public class RawColumn2ValueColumnMap
 
     public bool TryGetMapping(string channelId, out RawColumn2ValueColumnMapItem? result)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(channelId);
+        _ = channelId ?? throw new ArgumentNullException(nameof(channelId));
+        if (channelId.Length == 0) throw new ArgumentException("ChannelId must not be empty.", nameof(channelId));
+        
         if (Mappings is null)
             throw new InvalidOperationException("No mappings were defined.");
 

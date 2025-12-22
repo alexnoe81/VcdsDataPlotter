@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using VcdsDataPlotter.Gui.Model;
 using VcdsDataPlotter.Gui.ViewModel.Base;
+using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
 namespace VcdsDataPlotter.Gui.ViewModel
 {
@@ -33,7 +34,7 @@ namespace VcdsDataPlotter.Gui.ViewModel
             Document document = Document.LoadFile(filePath);
             this.document = document;
 
-            foreach (var column in document.DiscreteColumns.Concat(document.CalculatedColumns))
+            foreach (var column in document.DiscreteColumns.Concat(document.CalculatedColumns ?? Array.Empty<IDiscreteDataColumn>()))
             {
                 SourceColumnVM newColumn = new SourceColumnVM(column)
                 {

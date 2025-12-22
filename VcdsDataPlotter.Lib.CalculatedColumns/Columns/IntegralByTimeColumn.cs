@@ -1,8 +1,9 @@
 ﻿using System;
+using VcdsDataPlotter.Lib.CalculatedColumns.Math;
 using VcdsDataPlotter.Lib.Physics;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
+namespace VcdsDataPlotter.Lib.CalculatedColumns.Columns
 {
     /// <summary>
     /// Represents a calculated column containing ∫ sourceColumn(t) dt
@@ -33,16 +34,16 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
             _ = sourceColumn ?? throw new ArgumentNullException(nameof(sourceColumn));
 
             var deconstructedUnit = UnitHelpers.DeconstructUnit(sourceColumn.Unit);
-            if (deconstructedUnit.Denominator is not {Length: > 0 } || UnitHelpers.GetBaseUnit(deconstructedUnit.Denominator) != "s")
+            if (deconstructedUnit.Denominator is not { Length: > 0 } || UnitHelpers.GetBaseUnit(deconstructedUnit.Denominator) != BaseUnits.Time)
                 throw new ArgumentException($"Source column cannot be integrated by time: {sourceColumn}.", nameof(sourceColumn));
 
             // Make sure we convert the input column to /s
             IntegralByTimeColumn result = new IntegralByTimeColumn(
                 title: title, 
                 channelId: channelId,
-                sourceColumn: deconstructedUnit.Denominator == "s" 
+                sourceColumn: deconstructedUnit.Denominator == BaseUnits.Time
                     ? sourceColumn 
-                    : UnitTransformation.Create(sourceColumn, deconstructedUnit.Nominator + "/s"));
+                    : UnitTransformation.Create(sourceColumn, deconstructedUnit.Nominator + "/" + BaseUnits.Time));
             result.Unit = deconstructedUnit.Nominator;
             result.Initialize();
             return result;

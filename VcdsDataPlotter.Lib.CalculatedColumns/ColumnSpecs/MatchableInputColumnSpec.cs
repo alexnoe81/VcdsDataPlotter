@@ -6,10 +6,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnSpec
+namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnSpecs;
+
+public abstract class MatchableInputColumnSpec : ColumnSpec
 {
-    public abstract class MatchableInputColumnSpec : InputColumnSpec
-    {
-        protected MatchableInputColumnSpec() { }
-    }
+    protected MatchableInputColumnSpec() { }
 }

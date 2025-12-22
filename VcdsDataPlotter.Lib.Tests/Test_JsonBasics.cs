@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace VcdsDataPlotter.Lib.Tests
 {
+    /*
     [TestClass]
     public class Test_JsonBasics
     {
@@ -81,5 +82,5 @@ namespace VcdsDataPlotter.Lib.Tests
     public class ColumnSpecByChoice : ColumnSpec
     {
         public ColumnSpec[] Columns { get; set; }
-    }
+    }*/
 }

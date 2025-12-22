@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VcdsDataPlotter.Lib.CalculatedColumns.Columns;
 using VcdsDataPlotter.Lib.CalculatedColumns.Interface;
-using VcdsDataPlotter.Lib.CalculatedColumns.Math;
 using VcdsDataPlotter.Lib.RawTable.Columnizer;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
@@ -24,9 +24,9 @@ namespace VcdsDataPlotter.Lib.Tests.TestCalculatedColumns
 
             IInterpolatingColumn column = InterpolatingColumn.Create(simpleDiscreteColumn);
 
-            Assert.AreEqual(17.3, (double)column.GetValue(TimeSpan.FromSeconds(0)), 0.0001);
-            Assert.AreEqual(17.3, (double)column.GetValue(TimeSpan.FromSeconds(0.2)), 0.0001);
-            Assert.AreEqual(17.3, (double)column.GetValue(TimeSpan.FromSeconds(0.5)), 0.0001);
+            Assert.AreEqual(17.3, (double)column.GetValue(TimeSpan.FromSeconds(0)).RawData, 0.0001);
+            Assert.AreEqual(17.3, (double)column.GetValue(TimeSpan.FromSeconds(0.2)).RawData, 0.0001);
+            Assert.AreEqual(17.3, (double)column.GetValue(TimeSpan.FromSeconds(0.5)).RawData, 0.0001);
         }
 
         [TestMethod]
@@ -41,10 +41,10 @@ namespace VcdsDataPlotter.Lib.Tests.TestCalculatedColumns
 
             IInterpolatingColumn column = InterpolatingColumn.Create(simpleDiscreteColumn);
 
-            Assert.AreEqual(20, (double)column.GetValue(TimeSpan.FromSeconds(0.5)), 0.0001);
-            Assert.AreEqual(20, (double)column.GetValue(TimeSpan.FromSeconds(1.0)), 0.0001);
-            Assert.AreEqual(22.5, (double)column.GetValue(TimeSpan.FromSeconds(1.5)), 0.0001);
-            Assert.AreEqual(30, (double)column.GetValue(TimeSpan.FromSeconds(3.5)), 0.0001);
+            Assert.AreEqual(20, (double)column.GetValue(TimeSpan.FromSeconds(0.5)).RawData, 0.0001);
+            Assert.AreEqual(20, (double)column.GetValue(TimeSpan.FromSeconds(1.0)).RawData, 0.0001);
+            Assert.AreEqual(22.5, (double)column.GetValue(TimeSpan.FromSeconds(1.5)).RawData, 0.0001);
+            Assert.AreEqual(30, (double)column.GetValue(TimeSpan.FromSeconds(3.5)).RawData, 0.0001);
         }
 
 

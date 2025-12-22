@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VcdsDataPlotter.Lib.CalculatedColumns.Columns;
 using VcdsDataPlotter.Lib.CalculatedColumns.Interface;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
-namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
+namespace VcdsDataPlotter.Lib.CalculatedColumns.Columns
 {
     public class InterpolatingColumn : InitializableCalculatedColumnBase, IInterpolatingColumn
     {
@@ -38,7 +39,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
                 yield return item;
         }
 
-        public object GetValue(TimeSpan timestamp)
+        public SingleDataItem GetValue(TimeSpan timestamp)
         {
             CheckInitialized();
             if (sourceItems is not { Length: > 0 })
@@ -47,7 +48,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
                 throw new InvalidOperationException("No data available.");
 
             if (sourceItems.Length == 1)
-                return sourceItems[0].RawData;
+                return sourceItems[0];
 
             // Find close time stamp using binary search
             var index = Array.BinarySearch(sourceItemsTimeStamps, timestamp);
@@ -55,7 +56,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
             if (index >= 0)
             {
                 // Exact match found
-                return sourceItems[index].RawData;
+                return sourceItems[index];
             }
 
             index = (int)(index ^ 0xFFFFFFFF);
@@ -63,9 +64,9 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
             // Now index is the index of the first element that is larger. If no element is larger,
             // index points to (end+1). We won't extrapolate, only interpolate.
             if (index >= sourceItems.Length)
-                return sourceItems[sourceItems.Length - 1].RawData;
+                return sourceItems[sourceItems.Length - 1];
             if (index == 0)
-                return sourceItems[0].RawData;
+                return sourceItems[0];
 
             // Do linear interpolation
             var t1 = sourceItemsTimeStamps[index - 1];
@@ -76,7 +77,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Math
             var v2 = Convert.ToDouble(sourceItems[index].RawData);
             var result = v1 + f * (v2 - v1);
 
-            return result;
+            return new(timestamp, result);
         }
 
         private IDiscreteDataColumn discreteColumn;

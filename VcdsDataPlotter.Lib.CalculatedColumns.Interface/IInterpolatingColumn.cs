@@ -12,5 +12,5 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Interface;
 /// </summary>
 public interface IInterpolatingColumn : IDiscreteDataColumn
 {
-    object GetValue(TimeSpan timestamp);
+    SingleDataItem GetValue(TimeSpan timestamp);
 }
