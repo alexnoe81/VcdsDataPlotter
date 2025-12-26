@@ -35,7 +35,7 @@ namespace VcdsDataPlotter.Lib.Tests
             Assert.AreEqual(speedColumn!.ChannelId, "IDE00075");
         }
 
-        public void Test_Select_FindSecond()
+        public void Test_SelectFirst_FindSecond()
         {
             string sampleFilePath = Path.Combine("TestData", "SimpleCsv", "LogWithSpeed-2022-11-23.csv");
 
@@ -56,6 +56,28 @@ namespace VcdsDataPlotter.Lib.Tests
             Assert.AreEqual(speedColumn!.ChannelId, "IDE00075");
         }
 
+        [TestMethod]
+        public void Test_SelectFirst2_FindSecond()
+        {
+            string sampleFilePath = Path.Combine("TestData", "SimpleCsv", "LogWithSpeed-2022-11-23.csv");
+
+            using var fileStream = File.OpenRead(sampleFilePath);
+            using var reader = new StreamReader(fileStream);
+            CsvTable table = CsvTable.Open(reader, ",");
+
+            var channelMap = ChannelMaps.CreateDefaultMap();
+            VcdsTableColumnizer vcdsRecordedFile = VcdsTableColumnizer.Open(table, channelMap);
+
+            // Test the overload of SelectFirst which takes a sequence of ColumnBuilderConfiguration and
+            // uses the first one that can be materialized.
+            var vehicleSpeedColumnBuilder = new ColumnBuilderConfiguration().SelectFirst(
+                new ColumnBuilderConfiguration().Select(ColumnSpec.ChannelIdIs("IDE00076")),
+                new ColumnBuilderConfiguration().Select(ColumnSpec.TitleContains("Vehicle speed")));
+
+            var detailedResult = vehicleSpeedColumnBuilder.TryBuild(vcdsRecordedFile.DiscreteDataColumns, out var speedColumn);
+            Assert.IsTrue(detailedResult.Success);
+            Assert.AreEqual(speedColumn!.ChannelId, "IDE00075");
+        }
 
         [TestMethod]
         public void Test_Select_DonotFind()
@@ -151,6 +173,8 @@ namespace VcdsDataPlotter.Lib.Tests
             var detailedResult = distanceBuilder.TryBuild(vcdsRecordedFile.DiscreteDataColumns, out var distanceColumn);
             Assert.IsTrue(detailedResult.Success);
             Assert.AreEqual("abc", distanceColumn!.Unit);
+            Assert.AreEqual("Distance", distanceColumn!.Title);
+            Assert.AreEqual("VIRT_DISTANCE", distanceColumn!.ChannelId);
         }
 
         [TestMethod]

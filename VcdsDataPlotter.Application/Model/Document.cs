@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VcdsDataPlotter.Gui.ViewModel;
 using VcdsDataPlotter.Lib.CalculatedColumns;
 using VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders;
 using VcdsDataPlotter.Lib.CalculatedColumns.ColumnSpecs;
+using VcdsDataPlotter.Lib.CalculatedColumns.ConfigFiles;
 using VcdsDataPlotter.Lib.CalculatedColumns.Math;
 using VcdsDataPlotter.Lib.RawTable.Columnizer;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
@@ -35,30 +37,42 @@ namespace VcdsDataPlotter.Gui.Model
 
             FileInfo fi = new FileInfo(filePath);
             result.RawColumns = (IRawDataColumn[])vcdsFile.RawDataColumns.Clone();
-            result.DiscreteColumns = (IDiscreteDataColumn[])vcdsFile.DiscreteDataColumns.Clone();
+            result.SourceColumns = (IDiscreteDataColumn[])vcdsFile.DiscreteDataColumns.Clone();
 
             result.FileTime = fi.LastWriteTime;
             result.RecordingTimestamp = vcdsFile.RecordingTimestamp;
 
-            var vehicleSpeedColumnBuilder = new ColumnBuilderConfiguration().SelectFirst(
-                ColumnSpec.ChannelIdIs("IDE00075"),
-                ColumnSpec.TitleContains("Vehicle speed"));
+            var configRoot = AppDomain.CurrentDomain.BaseDirectory;
+            var semanticColumnsIndirection = ColumnBuilderConfigurationDefinitionRoot.Load(
+                Path.Combine(configRoot, "cfg", "SemanticColumns.xml"));
 
-            var traveledDistanceColumnBuilder = ColumnBuilderConfiguration
-                .Create("Traveled distance", "VIRT_DISTANCE")
-                .Calculate.IntegralByTime.Over(vehicleSpeedColumnBuilder)
-                .ConvertUnit("m");
-            
-            if (traveledDistanceColumnBuilder.TryBuild(result.DiscreteColumns, out var traveledDistanceColumn))
+            List<IDiscreteDataColumn> semanticColumns = new List<IDiscreteDataColumn>();
+            foreach (var definition in semanticColumnsIndirection.Columns)
             {
-                result.CalculatedColumns = [traveledDistanceColumn];
+                var builderConfiguration = definition.Build();
+                if (builderConfiguration.TryBuild(result.SourceColumns.Concat(semanticColumns).ToArray(), out var newColumn))
+                {
+                    semanticColumns.Add(newColumn);
+                }
             }
 
+            List<IDiscreteDataColumn> calculatedColumns = new List<IDiscreteDataColumn>();
+            var calculatedColumnsIndirection = ColumnBuilderConfigurationDefinitionRoot.Load(
+                Path.Combine(configRoot, "cfg", "CalculatedColumns.xml"));
+            foreach (var definition in calculatedColumnsIndirection.Columns)
+            {
+                var builderConfiguration = definition.Build();
+                if (builderConfiguration.TryBuild(result.SourceColumns.Concat(semanticColumns).Concat(calculatedColumns).ToArray(), out var newColumn))
+                {
+                    calculatedColumns.Add(newColumn);
+                }
+            }
 
+            result.CalculatedColumns = calculatedColumns.ToArray();
             return result;
         }
 
-        public IDiscreteDataColumn[] DiscreteColumns { get; set; }
+        public IDiscreteDataColumn[] SourceColumns { get; set; }
         public IRawDataColumn[] RawColumns { get; set; }
 
         public IDiscreteDataColumn[] CalculatedColumns { get; set; }

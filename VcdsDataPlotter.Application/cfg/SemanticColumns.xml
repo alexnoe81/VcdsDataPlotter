@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ColumnBuilderConfigurationDefinitionRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Columns>
+    <Column channelId="VIRT_VEHICLE_SPEED" title="Vehicle speed">
+      <Instruction xsi:type="Select">
+        <ChannelId>IDE00075</ChannelId>
+      </Instruction>
+    </Column>
+    <Column channelId="VIRT_TOTAL_DEF_CONSUMED" title="Total DEF consumed">
+      <Instruction xsi:type="SelectFirst">
+        <Choices>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>IDE16115</ChannelId>
+            </Instruction>
+          </Choice>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>IDE03144</ChannelId>
+            </Instruction>
+          </Choice>
+        </Choices>
+      </Instruction>
+    </Column>
+    <Column channelId="VIRT_HPEGR_MASS_FLOW_ACTUAL" title="Mass flow of high pressure EGR (actual)">
+      <Instruction xsi:type="Select">
+        <ChannelId>IDE03383</ChannelId>
+      </Instruction>
+    </Column>
+    <Column channelId="VIRT_LPEGR_MASS_FLOW_ACTUAL" title="Mass flow of low pressure EGR (actual)">
+      <Instruction xsi:type="SelectFirst">
+        <Choices>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>IDE07086</ChannelId>
+            </Instruction>
+          </Choice>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>IDE09886</ChannelId>
+            </Instruction>
+          </Choice>
+        </Choices>
+      </Instruction>
+    </Column>
+    <Column channelId="VIRT_CYLINDER_EXHAUST_MASS_FLOW" title="Exhaust Mass flow">
+      <Instruction xsi:type="SelectFirst">
+        <Choices>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>ENG247045</ChannelId>
+            </Instruction>
+          </Choice>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>IDE07374</ChannelId>
+            </Instruction>
+          </Choice>
+        </Choices>
+      </Instruction>
+    </Column>
+    <Column channelId="VIRT_NOX_BEFORE_SCR" title="NOx before SCR">
+      <Instruction xsi:type="SelectFirst">
+        <Choices>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>IDE04098/1</ChannelId>
+            </Instruction>
+          </Choice>
+          <Choice>
+            <Instruction xsi:type="Select">
+              <ChannelId>IDE03140</ChannelId>
+            </Instruction>
+          </Choice>
+        </Choices>
+      </Instruction>
+    </Column>
+  </Columns>
+</ColumnBuilderConfigurationDefinitionRoot>

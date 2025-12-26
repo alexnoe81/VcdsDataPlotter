@@ -84,7 +84,6 @@ public class UnitHelpers
             }
 
             // Handle more complex cases
-
             var baseUnitFromNominator = GetBaseUnit(first.Nominator);
             var baseUnitToNominator = GetBaseUnit(second.Nominator);
             if (baseUnitFromNominator != baseUnitToNominator)
@@ -143,6 +142,7 @@ public class UnitHelpers
 
         // Note: using ToLowerInvariant like this only works because we don't need to use M (Mega) vs. m (milli) here.
         //       If we wanted to support M, we would need to exclude the m from being capitalized.
+        // TODO: Find out if we should keep using ToLowerInvariant() here, or if we should rather be case sensitive
         var slashPos = entireUnit.IndexOf('/');
         if (slashPos == -1)
         {

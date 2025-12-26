@@ -17,7 +17,8 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
                 ColumnIdentity identity,
                 ColumnBuilderConfiguration sourceColumnBuilderConfiguration,
                 ColumnBuilderConfiguration otherBuilderConfiguration,
-                Func<double, double, double> @operator, string toStringTemplate)
+                Func<double, double, double?> @operator, 
+                string toStringTemplate)
                  : base(identity, [sourceColumnBuilderConfiguration, otherBuilderConfiguration])
             {
                 this.@operator = @operator ?? throw new ArgumentNullException(nameof(@operator));
@@ -30,7 +31,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
                 if (!success)
                 {
                     result = null;
-                    return ColumnBuilderBuildingResult.CreateError(new(this, "Failed to resolve source column.", problems.First().Reasons));
+                    return ColumnBuilderBuildingResult.CreateError(new(this, "Failed to resolve source column.", problems));
                 }
 
                 result = MultiColumnCalculation.Create(Identity.Title, Identity.ChannelId, resolvedSourceColumns.ElementAt(0), resolvedSourceColumns.ElementAt(1), @operator);
@@ -39,9 +40,8 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
 
             public override string ToString() => string.Format(toStringTemplate, SourceColumnBuilderConfigurations.Cast<object>().ToArray());
 
-            private Func<double, double, double> @operator;
+            private Func<double, double, double?> @operator;
             private string toStringTemplate;
         }
-
     }
 }

@@ -30,6 +30,6 @@ internal class InputColumnSpecTitle : MatchableInputColumnSpec
 
     public override string ToString() => $"Normalized title is '{normalizedTitle}'";
 
-    private string title;
-    private string normalizedTitle;
+    private readonly string title;
+    private readonly string normalizedTitle;
 }

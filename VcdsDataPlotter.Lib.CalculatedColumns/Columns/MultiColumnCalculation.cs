@@ -13,7 +13,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Columns
 {
     public class MultiColumnCalculation : CalculatedColumnBase, IDiscreteDataColumn
     {
-        protected MultiColumnCalculation(string title, string channelId, IDiscreteDataColumn inputColumn1, IDiscreteDataColumn inputColumn2, Func<double, double, double> @operator) 
+        protected MultiColumnCalculation(string title, string channelId, IDiscreteDataColumn inputColumn1, IDiscreteDataColumn inputColumn2, Func<double, double, double?> @operator) 
         {
             Title = title;
             ChannelId = channelId;
@@ -25,7 +25,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Columns
                 InputColumn2 = InterpolatingColumn.Create(InputColumn2);
         }     
         
-        public static MultiColumnCalculation Create(string title, string channelId, IDiscreteDataColumn inputColumn1, IDiscreteDataColumn inputColumn2, Func<double, double, double> @operator)
+        public static MultiColumnCalculation Create(string title, string channelId, IDiscreteDataColumn inputColumn1, IDiscreteDataColumn inputColumn2, Func<double, double, double?> @operator)
         {
             _ = inputColumn1 ?? throw new ArgumentNullException(nameof(inputColumn1));
             _ = inputColumn2 ?? throw new ArgumentNullException(nameof(inputColumn2));
@@ -63,14 +63,17 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Columns
             {
                 var other = (InputColumn2 as IInterpolatingColumn)!.GetValue(item.TimeStamp);
 
-                yield return new(item.TimeStamp, Operator(item.RawData, other.RawData));
+                if (Operator(item.RawData, other.RawData) is double value)
+                {
+                    yield return new(item.TimeStamp, value);
+                }
             }
         }
 
         protected IDiscreteDataColumn InputColumn1 { get; private set; }
         protected IDiscreteDataColumn InputColumn2 { get; private set; }
 
-        protected Func<double, double, double> Operator { get; private set; }
+        protected Func<double, double, double?> Operator { get; private set; }
     }
 
     // Note: This does currently not take into account units, or even scaling

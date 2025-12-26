@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ColumnBuilderConfigurationDefinitionRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Columns>
+    <Column channelId="VIRT_TRAVELED_DISTANCE" title="Traveled distance">
+      <Instruction xsi:type="Select">
+        <ChannelId>VIRT_VEHICLE_SPEED</ChannelId>
+      </Instruction>
+      <Instruction xsi:type="IntegrateByTime" />
+      <Instruction xsi:type="ConvertUnit">
+        <TargetUnit>m</TargetUnit>
+      </Instruction>
+    </Column>
+    <Column channelId="VIRT_DEF_CONSUMED" title="DEF consumed since start of file">
+      <Instruction xsi:type="Select">
+        <ChannelId>VIRT_TOTAL_DEF_CONSUMED</ChannelId>
+      </Instruction>
+      <Instruction xsi:type="DifferenceToFirstRow" />
+    </Column>
+    <Column channelId="VIRT_HPEGR_TOTAL_MASS" title="High pressure EGR total mass">
+      <Instruction xsi:type="Select">
+        <ChannelId>VIRT_HPEGR_MASS_FLOW_ACTUAL</ChannelId>
+      </Instruction>
+      <Instruction xsi:type="IntegrateByTime" />
+    </Column>
+    <Column channelId="VIRT_LPEGR_TOTAL_MASS" title="Low pressure EGR total mass">
+      <Instruction xsi:type="Select">
+        <ChannelId>VIRT_LPEGR_MASS_FLOW_ACTUAL</ChannelId>
+      </Instruction>
+      <Instruction xsi:type="IntegrateByTime" />
+    </Column>
+    <Column channelId="VIRT_CYLINDER_TOTAL_EXHAUST_MASS" title="Total exhaust mass after cylinder block">
+      <Instruction xsi:type="Select">
+        <ChannelId>VIRT_CYLINDER_EXHAUST_MASS_FLOW</ChannelId>
+      </Instruction>
+      <Instruction xsi:type="IntegrateByTime" />
+    </Column>
+  </Columns>
+</ColumnBuilderConfigurationDefinitionRoot>

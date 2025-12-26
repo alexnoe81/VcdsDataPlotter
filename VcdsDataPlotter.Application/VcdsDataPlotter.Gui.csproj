@@ -36,4 +36,12 @@
     <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Reader\VcdsDataPlotter.Lib.RawTable.Reader.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib\VcdsDataPlotter.Lib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="cfg\CalculatedColumns.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="cfg\SemanticColumns.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

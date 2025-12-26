@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using VcdsDataPlotter.Lib.CalculatedColumns.Columns;
 using VcdsDataPlotter.Lib.CalculatedColumns.ColumnSpecs;
 using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
 namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
 {
     /// <summary>
-    /// A ColumnBuilderConfiguration is used to create a description of a column that can be materialized
+    /// A ColumnBuilderConfiguration is used to create a description of a (calculated) column that can be materialized
     /// from a list of input solumns
     /// </summary>
     public partial class ColumnBuilderConfiguration
@@ -26,9 +19,10 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
         /// Creates a column builder configuration that uses the specified title and column id for
         /// the column when calling TryBuild.
         /// </summary>
-        /// <param name="title"></param>
-        /// <param name="channelId"></param>
+        /// <param name="title">Column title to use in plots</param>
+        /// <param name="channelId">Unique identifier of the column</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException" />
         public static ColumnBuilderConfiguration Create(string title, string channelId) => new(title, channelId);
 
         /// <summary>
@@ -60,6 +54,13 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
         /// <param name="specs"></param>
         /// <returns></returns>
         public ColumnBuilderConfiguration SelectFirst(params ColumnSpec[] specs) => new SelectionBuilderConfiguration(Identity, specs);
+
+        /// <summary>
+        /// Creates a column builder configuration that selects the first column that can be materialized.
+        /// </summary>
+        /// <param name="specs"></param>
+        /// <returns></returns>
+        public ColumnBuilderConfiguration SelectFirst(params ColumnBuilderConfiguration[] specs) => new SelectionBuilderConfiguration2(Identity, specs);
         
         /// <summary>
         /// Appends a unit conversion to the current builder configuration
@@ -91,7 +92,8 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
         /// <param name="otherBuilderConfiguration"></param>
         /// <returns></returns>
         public ColumnBuilderConfiguration MultiplyBy(ColumnBuilderConfiguration otherBuilderConfiguration) => new FunctionBuilderConfiguration(Identity, this, otherBuilderConfiguration, (x, y) => x * y, "{0} * {1}");
-        
+        public ColumnBuilderConfiguration DevideBy(double other) => MultiplyBy(1 / other);
+        public ColumnBuilderConfiguration DevideBy(ColumnBuilderConfiguration otherBuilderConfiguration) => new FunctionBuilderConfiguration(Identity, this, otherBuilderConfiguration, (x, y) => y != 0 ? x / y : null, "{0} / {1}");
         public ColumnBuilderConfiguration Add(ColumnBuilderConfiguration otherBuilderConfiguration) => new FunctionBuilderConfiguration(Identity, this, otherBuilderConfiguration, (x, y) => x + y, "{0} + {1}");
         public ColumnBuilderConfiguration Add(double other) => TransformLinear(1, other);
         public ColumnBuilderConfiguration Subtract(ColumnBuilderConfiguration otherBuilderConfiguration) => new FunctionBuilderConfiguration(Identity, this, otherBuilderConfiguration, (x, y) => x - y, "'{0}' - '{1}'");
@@ -143,7 +145,8 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
     {
         IIntegralByTimeContainer IntegralByTime { get; }
         IRunningChangeContainer RunningChange { get; }
-        public ColumnBuilderConfiguration DifferenceToFirstRow { get; }
+        
+        ColumnBuilderConfiguration DifferenceToFirstRow { get; }
     }
 
     public interface IIntegralByTimeContainer
