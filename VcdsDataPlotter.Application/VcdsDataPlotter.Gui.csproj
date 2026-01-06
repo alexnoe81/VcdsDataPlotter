@@ -33,14 +33,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VcdsDataPlotter.Lib.CalculatedColumns\VcdsDataPlotter.Lib.CalculatedColumns.csproj" />
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.ProjectDefinition\VcdsDataPlotter.Lib.ProjectDefinition.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Reader\VcdsDataPlotter.Lib.RawTable.Reader.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib\VcdsDataPlotter.Lib.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="cfg\CalculatedColumns.xml">
+    <None Update="cfg\DefaultCalculatedColumns.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="cfg\SemanticColumns.xml">
+    <None Update="cfg\DefaultSemanticColumns.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

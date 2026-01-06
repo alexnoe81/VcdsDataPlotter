@@ -9,8 +9,8 @@ using VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders;
 namespace VcdsDataPlotter.Lib.CalculatedColumns.ConfigFiles;
 
 
-[XmlType("CalculateRunningAverage")]
-public class CalculateRunningAverage : CalculationDefinitionStep
+[XmlType("CalculateRunningChange")]
+public class CalculateRunningChange : CalculationDefinitionStep
 {
     // TODO: This results in a funny format, such as PT1.2S for 1.2 seconds.
     // TODO: Add more running average options when columns become available, such as

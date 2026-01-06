@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VcdsDataPlotter.Lib.Calcula
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VcdsDataPlotter.Lib.Physics", "VcdsDataPlotter.Lib.Physics\VcdsDataPlotter.Lib.Physics.csproj", "{3ED3F8B9-F569-4E25-B853-8C9682DA0B38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VcdsDataPlotter.Lib.ProjectDefinition", "VcdsDataPlotter.Lib.ProjectDefinition\VcdsDataPlotter.Lib.ProjectDefinition.csproj", "{8F86F848-A5ED-4488-A432-22963291302C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{3ED3F8B9-F569-4E25-B853-8C9682DA0B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ED3F8B9-F569-4E25-B853-8C9682DA0B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ED3F8B9-F569-4E25-B853-8C9682DA0B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F86F848-A5ED-4488-A432-22963291302C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F86F848-A5ED-4488-A432-22963291302C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F86F848-A5ED-4488-A432-22963291302C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F86F848-A5ED-4488-A432-22963291302C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

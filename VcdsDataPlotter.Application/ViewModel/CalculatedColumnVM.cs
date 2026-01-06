@@ -8,7 +8,7 @@ using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
 namespace VcdsDataPlotter.Gui.ViewModel
 {
-    public abstract class CalculatedColumnVM : ViewModelBase
+  /*  public abstract class CalculatedColumnVM : ViewModelBase
     {
         public CalculatedColumnVM() { }
 
@@ -26,5 +26,5 @@ namespace VcdsDataPlotter.Gui.ViewModel
         public SourceColumnVM SourceColumn { get; set; }
     }
 
-
+    */
 }

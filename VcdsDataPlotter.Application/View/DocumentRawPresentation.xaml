@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="VcdsDataPlotter.Gui.View.DocumentRawPresentation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VcdsDataPlotter.Gui.View"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <!-- This is somewhat slow, especially when not fixing the height -->
+        <DataGrid             
+            ItemsSource="{Binding ActiveDataTable}" AutoGenerateColumns="True"
+            ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+            ScrollViewer.CanContentScroll="True" EnableRowVirtualization="True" EnableColumnVirtualization="True"
+            VirtualizingPanel.IsVirtualizing="True"
+            VirtualizingPanel.ScrollUnit="Pixel"
+            VirtualizingPanel.IsContainerVirtualizable="True"
+            AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"/>
+    </Grid>
+</UserControl>

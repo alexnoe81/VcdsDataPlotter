@@ -110,7 +110,7 @@ namespace VcdsDataPlotter.Lib.Tests
             ];
 
             XmlSerializer serializer = new XmlSerializer(typeof(ColumnBuilderConfigurationDefinitionRoot));
-            WriteToXmlFile(serializer, "SemanticColumns.xml", root);
+            WriteToXmlFile(serializer, "DefaultSemanticColumns.xml", root);
             
             var noxBeforeSCRConfiguration = noxBeforeSCRDefinition.Build();
         }
@@ -179,7 +179,7 @@ namespace VcdsDataPlotter.Lib.Tests
             ];
 
             XmlSerializer serializer = new XmlSerializer(typeof(ColumnBuilderConfigurationDefinitionRoot));
-            WriteToXmlFile(serializer, "CalculatedColumns.xml", root);
+            WriteToXmlFile(serializer, "DefaultCalculatedColumns.xml", root);
         }
 
 

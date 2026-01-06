@@ -14,7 +14,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ConfigFiles;
 [XmlInclude(typeof(MultiplyBy))]
 [XmlInclude(typeof(DevideBy))]
 [XmlInclude(typeof(IntegrateByTime))]
-[XmlInclude(typeof(CalculateRunningAverage))]
+[XmlInclude(typeof(CalculateRunningChange))]
 [XmlInclude(typeof(DifferenceToFirstRow))]
 [XmlInclude(typeof(ConvertUnit))]
 [XmlInclude(typeof(ReassignUnit))]

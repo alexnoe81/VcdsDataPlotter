@@ -11,10 +11,10 @@ namespace VcdsDataPlotter.Gui.ViewModel.Base
     {
         protected NotifyPropertyChangedBase() { }
 
-        protected void SetProperty<T>(ref T field, T newValue) => ChangeProperty(ref field, newValue, (Action<T, T>?)null);
-        protected void ChangeProperty<T>(ref T field, T newValue, Action? onChanged) => ChangeProperty(ref field, newValue, (_, _) => onChanged?.Invoke());
+        protected void SetProperty<T>(ref T field, T newValue) => SetProperty(ref field, newValue, (Action<T, T>?)null);
+        protected void SetProperty<T>(ref T field, T newValue, Action? onChanged) => SetProperty(ref field, newValue, (_, _) => onChanged?.Invoke());
 
-        protected void ChangeProperty<T>(ref T field, T newValue, Action<T, T>? onChanged)
+        protected void SetProperty<T>(ref T field, T newValue, Action<T, T>? onChanged)
         {
             if (field is null && newValue is null)
                 return;

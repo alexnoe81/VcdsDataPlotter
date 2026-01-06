@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\VcdsDataPlotter.Lib.CalculatedColumns\VcdsDataPlotter.Lib.CalculatedColumns.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib.Physics\VcdsDataPlotter.Lib.Physics.csproj" />
+    <ProjectReference Include="..\VcdsDataPlotter.Lib.ProjectDefinition\VcdsDataPlotter.Lib.ProjectDefinition.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Columnizer\VcdsDataPlotter.Lib.RawTable.Columnizer.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib.RawTable.Reader\VcdsDataPlotter.Lib.RawTable.Reader.csproj" />
     <ProjectReference Include="..\VcdsDataPlotter.Lib\VcdsDataPlotter.Lib.csproj" />

@@ -18,6 +18,7 @@
             <Binding Path="RecordingTimestamp" />
         </MultiBinding>
     </Window.Title>
+    
     <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -63,7 +64,15 @@
                     <DataGridTemplateColumn Header="Channel Id" Width="100" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding SourceColumnId}" Margin="8,2,8,2" />
+                                <TextBlock Text="{Binding Id}" Margin="8,2,8,2" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="[  ]" Width="50" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="8,2,8,2" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -74,8 +83,8 @@
                                 <TextBlock Margin="8,2,8,2">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} [{1}]">
-                                            <Binding Path="SourceColumnTitle" />
-                                            <Binding Path="SourceColumnUnit" />
+                                            <Binding Path="Title" />
+                                            <Binding Path="Unit" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -91,12 +100,45 @@
             <!-- These will probably need to be a tree because a data grid can't really hold input column(s), calculations and arguments -->
             <TextBlock
                 Grid.Row="4" Grid.Column="0" Text="Calculated columns: " Margin="0,4,8,2" VerticalAlignment="Stretch" />
-            
-            
-            <TreeView  Grid.Row="4" Grid.Column="1">
-                
-            </TreeView>
-            
+
+            <DataGrid
+                Grid.Row="4" Grid.Column="1" ItemsSource="{Binding CalculatedColumns}" x:Name="calculatedColumns"
+                Style="{StaticResource styleReadOnlyDataGrid}" SelectionMode="Extended" SelectionUnit="FullRow"
+                Height="200">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Channel Id" Width="100" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Id}" Margin="8,2,8,2" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="[  ]" Width="50" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="8,2,8,2" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Title" Width="*" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="8,2,8,2">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} [{1}]">
+                                            <Binding Path="Title" />
+                                            <Binding Path="Unit" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+           
         </Grid>
 
         <ScottPlot.WPF:WpfPlotGL Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" x:Name="plotControl" />

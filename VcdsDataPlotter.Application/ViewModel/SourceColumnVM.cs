@@ -9,29 +9,32 @@ using VcdsDataPlotter.Lib.RawTable.Columnizer.Interface;
 
 namespace VcdsDataPlotter.Gui.ViewModel
 {
-    /// <summary>
-    /// This represents a column that does not use any other column as input
-    /// </summary>
-    public class SourceColumnVM : DataColumnVM
+    public class ChangedEventArgs<T> : EventArgs
     {
-        public SourceColumnVM(IDiscreteDataColumn model) : base(model) { }
+        public ChangedEventArgs(T oldValue, T newValue) => (OldValue, NewValue) = (oldValue, newValue);
+        public T OldValue { get; private set; }
+        public T NewValue { get; private set; }
+    }
 
-        /// <summary>
-        /// Returns the ID of the source column. This may be null for virtual columns
-        /// </summary>
-        public string? SourceColumnId
+    public abstract class RenderableColumnVM : DataColumnVM
+    {
+        protected RenderableColumnVM(IDiscreteDataColumn model) : base(model)
         {
-            get => this.sourceColumnId;
-            set => SetProperty(ref this.sourceColumnId, value);
         }
 
-        public string? SourceColumnTitle
+        public bool IsSelected
+        {
+            get => this.isSelected;
+            set => SetProperty(ref this.isSelected, value, (oldValue, newValue) => IsSelectedChanged?.Invoke(this, new ChangedEventArgs<bool>(oldValue, newValue)));
+        }
+
+        public string? Title
         {
             get => this.sourceColumnTitle;
             set => SetProperty(ref this.sourceColumnTitle, value);
         }
 
-        public string? SourceColumnUnit
+        public string? Unit
         {
             get => this.sourceColumnUnit;
             set => SetProperty(ref this.sourceColumnUnit, value);
@@ -43,8 +46,39 @@ namespace VcdsDataPlotter.Gui.ViewModel
                 yield return item;
         }
 
-        private string? sourceColumnId;
+        public event EventHandler<ChangedEventArgs<bool>>? IsSelectedChanged;
+
         private string? sourceColumnTitle;
         private string? sourceColumnUnit;
+        private bool isSelected;
+    }
+
+    /// <summary>
+    /// This represents a column that does not use any other column as input
+    /// </summary>
+    public class SourceColumnVM : RenderableColumnVM
+    {
+        public SourceColumnVM(IDiscreteDataColumn model) : base(model) { }
+
+        /// <summary>
+        /// Returns the ID of the source column. This may be null for virtual columns
+        /// </summary>
+        public string? Id
+        {
+            get => this.id;
+            set => SetProperty(ref this.id, value);
+        }
+
+
+
+        private string? id;
+
+    }
+
+    public class CalculatedColumnVM : RenderableColumnVM
+    {
+        public CalculatedColumnVM(IDiscreteDataColumn model) : base(model)
+        {
+        }
     }
 }

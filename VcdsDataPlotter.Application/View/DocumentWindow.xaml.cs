@@ -28,10 +28,36 @@ namespace VcdsDataPlotter.Gui.View
 
         private void availableSourceColumns_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var currentSelection = availableSourceColumns.SelectedItems;
+            
+        }
+
+        private void Window_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is DocumentOverviewPresentationVM old)
+            {
+                old.SelectedColumnsChanged -= HandleSelectedColumnsChanged;
+                old.OnCmdAddColumn -= HandleCmdAddColumn;
+            }
+
+            if (e.NewValue is DocumentOverviewPresentationVM @new)
+            {
+                @new.OnCmdAddColumn += HandleCmdAddColumn;
+
+                @new.SelectedColumnsChanged += HandleSelectedColumnsChanged;
+
+            }
+        }
+
+        private void HandleSelectedColumnsChanged(object? sender, EventArgs e)
+        {
+            if (DataContext is not DocumentOverviewPresentationVM vm)
+                return;
+
+            var currentSelection = vm.SourceColumns.Concat(vm.CalculatedColumns).Where(x => x.IsSelected).ToArray();
+            
             plotControl.Plot.Clear();
 
-            foreach (var item in currentSelection.OfType<SourceColumnVM>())
+            foreach (var item in currentSelection.OfType<RenderableColumnVM>())
             {
                 var xs = item.EnumeratePoints().Select(x => x.TimeStamp.TotalSeconds).ToArray();
                 var ys = item.EnumeratePoints().Select(x => x.RawData).ToArray();
@@ -39,7 +65,11 @@ namespace VcdsDataPlotter.Gui.View
                     continue;
 
                 var line = plotControl.Plot.Add.ScatterLine(xs, ys);
-                line.LegendText = item.SourceColumnId + ": " + item.SourceColumnTitle ?? "";
+
+                if (item is SourceColumnVM scvm)
+                    line.LegendText = scvm.Id + ": " + item.Title ?? "";
+                else
+                    line.LegendText = item.Title ?? "";
             }
 
             plotControl.Plot.ScaleFactor = 2;
@@ -48,22 +78,10 @@ namespace VcdsDataPlotter.Gui.View
             plotControl.Refresh();
         }
 
-        private void Window_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue is DocumentVM old)
-            {
-                old.OnCmdAddColumn -= HandleCmdAddColumn;
-            }
-
-            if (e.NewValue is DocumentVM @new)
-            {
-                @new.OnCmdAddColumn += HandleCmdAddColumn;
-            }
-        }
 
         private void HandleCmdAddColumn(object? sender, EventArgs e)
         {
-            var vm = this.DataContext as DocumentVM;
+            var vm = this.DataContext as DocumentOverviewPresentationVM;
 
             var createColumnVm = new CreateVirtualColumnWindowVM();
 

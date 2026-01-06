@@ -79,14 +79,11 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
             {
                 foreach (var criterion in this.Specs)
                 {
-            //        foreach (var column in columns)
-            //        {
-                        if (criterion.TryBuild(columns, out var buildResult))
-                        {
-                            result = new RenamedColumn(Identity.Title, Identity.ChannelId, buildResult);
-                            return ColumnBuilderBuildingResult.SuccessfulResult;
-                        }
-            //        }
+                    if (criterion.TryBuild(columns, out var buildResult))
+                    {
+                        result = new RenamedColumn(Identity.Title, Identity.ChannelId, buildResult!);
+                        return ColumnBuilderBuildingResult.SuccessfulResult;
+                    }
                 }
 
                 result = null;

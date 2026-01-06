@@ -23,8 +23,22 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.ColumnsBuilders
             public ForCalculation(ColumnBuilderConfiguration parentBuilderConfiguration, ColumnIdentity identity)
                 : base(parentBuilderConfiguration, identity) { }
 
+            /// <summary>
+            /// Probably not needed, because we can call IntegrateByTime on a ColumnBuilderConfiguration
+            /// </summary>
             public IIntegralByTimeContainer IntegralByTime { get => new IntegralByTimeContainer(ParentBuilderConfiguration, Identity); }
+            
+            /// <summary>
+            /// Creates a container for a running average calculation. The container has function Over(TimeSpan), allowing
+            /// to specify the time span for the running average.
+            /// </summary>
             public IRunningChangeContainer RunningChange { get => new RunningChangeContainer(ParentBuilderConfiguration, Identity); }
+
+            /// <summary>
+            /// Creates a ColumnBuilderConfiguration that calculates the difference of each row to the first row. This
+            /// is useful if a column contains the accumulated data of something over the life span of a vehicle, such
+            /// as the total Fuel or DEF consumption.
+            /// </summary>
             public ColumnBuilderConfiguration DifferenceToFirstRow { get => new DifferenceToFirstRowBuilderConfiguration(Identity, ParentBuilderConfiguration); }
 
             /// <summary>

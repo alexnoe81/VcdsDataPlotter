@@ -22,39 +22,37 @@ Marker,TIME,Loc. IDE00021,TIME,Loc. IDE00075,TIME,Loc. IDE00100
 
 __1.2. Data to visualize__
 
-Whereas some columns are useful directly, other values that may need to be plotted must actually be calculated from other columns. 
+Some columns are useful directly, other values that may need to be plotted must be calculated from other columns. 
 For example, there is usually no column for EGR rate, but there are columns for exhaust mass flow and for EGR mass flow.
 
 __1.3. Vehicle dependency__
 
-Channel Ids and titles are highly vehicle dependent. If we want to give some semantic to columns,
-we need to map technical channel ids to semantic channel ids. For example, a channel VIRT_VEHICLE_SPEED
-could point to technical channel id IDE00075.
+Channel Ids and titles are highly vehicle dependent, even if we do not take into account UI languages of VCDS. If we want
+to give some meaning to columns, we need to map technical channel ids to semantic channel ids. 
 
+For example, vehicle speed is usually IDE00075, but calculated actual low-pressure EGR mass flow is IDE09886 in EA288 engines,
+but IDE07086 in EA288 evo engines.
 
-__1.3 Goal__
+__1.4 Semantic and calculated columns__
 
-__1.3.1 Semantic columns__ 
+__1.4.1 Semantic columns__ 
 
 It must be possible to create a configuration file that defines semantic columns. These semantic columns must have a specific semantic, 
 like a column representing vehicle speed, no matter if it has different channel ids in different engines or different titles in different
 languages.
 
-We want a configuration that allows something like:
+__1.4.2 Calculated Columns__
 
-    var traveledDistanceColumnBuilder = ColumnBuilderConfiguration
-        .Create("Traveled distance", "VIRT_DISTANCE")
-        .Select(ColumnSpec.ChannelIdIs("IDE00075"))
-        .IntegrateByTime()
-        .ConvertUnit("m");
+Using semantic columns, we can defined often-needed calculated columns, such as:
 
-This kind of setup can be put into a configuration file relatively easily.
+    s = ∫ v(t) dt
 
+or even
 
-We need the following building blocks:
-- Select a single column by its ChannelId or channel title
-  => the title is localized, so it won't help much
-- Select the first column out of a list of columns that exist
+                 ∫ egr_massflow(t) dt
+    EGR-rate = ------------------------
+               ∫ exhaust_massflow(t) dt
+
 
 __2. Idea__
 
@@ -87,18 +85,70 @@ which calculations to perform, and which conversions to perform:
 ```
 When calling TryBuild(...), the resulting IDiscreteDataColumn provides access to the configured data.
 
-Example:
+Then, we can do something like:
 
     var traveledDistanceColumnBuilder = ColumnBuilderConfiguration
-        .Create("Traveled distance", "VIRT_DISTANCE")
-        .Select(ColumnSpec.ChannelIdIs("IDE00075"))
+        .Create("Traveled distance", "VIRT_VEHICLE_SPEED")
+        .Select(ColumnSpec.ChannelIdIs("IDE00075"));
+
+returning the traveled distance in meters. Or:
+
+    var traveledDistanceColumnBuilder = ColumnBuilderConfiguration
+        .Create("Traveled distance", "VIRT_TRAVELED_DISTANCE")
+        .Select(ColumnSpec.ChannelIdIs("VIRT_VEHICLE_SPEED"))
         .IntegrateByTime()
         .ConvertUnit("m");
 
+This kind of setup can be put into a configuration file relatively easily.
+
+
 __2.2. Configuration files__
 
-It must be possible to define a `ColumnBuilderConfiguration` in a configuration file. For example, if the same
-piece of information is available under different ChannelIds in different vehicles, a configuration file might
-specify a virtual column with a virtual ChannelId, which basicly defines which real ChannelIds zu try. This
-is shown above with a virtual column with ChannelId `VIRT_DISTANCE`.
+It must be possible to define a `ColumnBuilderConfiguration` in a configuration file.
 
+
+__3. Implementation__
+
+__3.1. Table reader__
+
+The interface `IRawTable` represents a table that can be accessed by row and column. The class `CsvTable` reads a CSV formatted text file.
+
+`VcdsTableColumnizer` reads an IRawTable, seperates head lines from data, and creates actual data columns from it.
+If columns are known to contain several values in one string, it splits them.
+=> result: `IDiscreteDataColumn`
+
+__3.2. Calculated columns__
+
+Everything is build upon `IDiscreteDataColumn`. Calculated columns are built using a `ColumnBuilderConfiguration`.
+A `ColumnBuilderConfiguration` describes how to construct a column, such as: select column with id xyz, and then
+integrate it by time.
+
+__3.3. Defining `ColumnBuilderConfiguration` in configuration files__
+
+Since `ColumnBuilderConfiguration` instances know their hierarchy and have a Source or Parent property, they cannot
+be serialized and deserialized directly, at least not without making the resulting JSON or XML string look badly readable.
+
+To avoid this, there is a `ColumnBuilderConfigurationDefinition`, which is contained inside a
+`ColumnBuilderConfigurationDefinitionRoot`. These objects are XML serializeable, and are also human-readable enough
+to actually read or write such files. After deserialization, the function `ColumnBuilderConfigurationDefinition.Build()` 
+builds a `ColumnBuilderConfiguration`, as described in 3.2.
+
+For example, the definition for "traveled distance" looks like this:
+
+    <Column channelId="VIRT_TRAVELED_DISTANCE" title="Traveled distance">
+      <Instruction xsi:type="Select">
+        <ChannelId>VIRT_VEHICLE_SPEED</ChannelId>
+      </Instruction>
+      <Instruction xsi:type="IntegrateByTime" />
+      <Instruction xsi:type="ConvertUnit">
+        <TargetUnit>m</TargetUnit>
+      </Instruction>
+    </Column>
+
+where VIRT_VEHICLE_SPEED is defined as:
+
+    <Column channelId="VIRT_VEHICLE_SPEED" title="Vehicle speed">
+      <Instruction xsi:type="Select">
+        <ChannelId>IDE00075</ChannelId>
+      </Instruction>
+    </Column>

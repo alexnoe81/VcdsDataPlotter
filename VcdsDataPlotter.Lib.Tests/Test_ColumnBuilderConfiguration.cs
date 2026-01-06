@@ -37,6 +37,7 @@ namespace VcdsDataPlotter.Lib.Tests
 
         public void Test_SelectFirst_FindSecond()
         {
+            // Tests ColumnBuilderConfiguration.SelectFirst() with passing column matching criteria, such as ChannelId
             string sampleFilePath = Path.Combine("TestData", "SimpleCsv", "LogWithSpeed-2022-11-23.csv");
 
             using var fileStream = File.OpenRead(sampleFilePath);
@@ -59,6 +60,7 @@ namespace VcdsDataPlotter.Lib.Tests
         [TestMethod]
         public void Test_SelectFirst2_FindSecond()
         {
+            // Tests ColumnBuilderConfiguration.SelectFirst() with passing ColumnBuilderConfiguration objects
             string sampleFilePath = Path.Combine("TestData", "SimpleCsv", "LogWithSpeed-2022-11-23.csv");
 
             using var fileStream = File.OpenRead(sampleFilePath);
@@ -97,6 +99,7 @@ namespace VcdsDataPlotter.Lib.Tests
 
             var detailedResult = vehicleSpeedColumnBuilder.TryBuild(vcdsRecordedFile.DiscreteDataColumns, out var speedColumn);
             Assert.IsFalse(detailedResult.Success);
+            Assert.AreEqual("None of the provided ColumnSpecs matched any of the provided source columns.", detailedResult.Problem.Error);
         }
 
         [TestMethod]

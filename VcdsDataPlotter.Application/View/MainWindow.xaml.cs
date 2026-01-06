@@ -15,6 +15,7 @@ using System.Diagnostics;
 using VcdsDataPlotter.Gui.ViewModel;
 using Serilog;
 using Microsoft.Win32;
+using VcdsDataPlotter.Gui.Model;
 
 namespace VcdsDataPlotter.Gui.View;
 
@@ -82,10 +83,17 @@ public partial class MainWindow : Window
     {
         var localLogger = classLogger.ForMember();
 
-        DocumentVM documentVM;
+        DocumentOverviewPresentationVM documentVM;
+        DocumentRawPresentationWindowVM documentRawPresentationWindowVM;
+
         try
         {
-            documentVM = DocumentVM.LoadFile(filePath);
+            Document document = Document.LoadFile(filePath);
+            documentVM = DocumentOverviewPresentationVM.Load(document);
+            documentRawPresentationWindowVM = new DocumentRawPresentationWindowVM()
+            {
+                Data = DocumentRawPresentationVM.Load(document)
+            };
         }
         catch (Exception error)
         {
@@ -99,6 +107,11 @@ public partial class MainWindow : Window
         window.Owner = this;
         window.DataContext = documentVM;
         window.Show();
+
+        DocumentRawPresentationWindow window2 = new DocumentRawPresentationWindow();
+        window2.Owner = window;
+        window2.DataContext = documentRawPresentationWindowVM;
+        window2.Show();
     }
 
     private void DisplayError(string errorMessage)

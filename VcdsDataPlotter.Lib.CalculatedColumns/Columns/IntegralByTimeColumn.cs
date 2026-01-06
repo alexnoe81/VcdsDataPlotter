@@ -74,7 +74,7 @@ namespace VcdsDataPlotter.Lib.CalculatedColumns.Columns
                     }
                     else
                     {
-                        temp.Add(new(TimeSpan.Zero, accumulatedValue));
+                        temp.Add(new(item.TimeStamp, accumulatedValue));
                     }
                 }
                 finally
